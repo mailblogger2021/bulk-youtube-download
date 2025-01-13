@@ -24,7 +24,13 @@ jobs:
         run: |
           7z x ffmpeg.7z -o"ffmpeg" -y
 
-      # Step 4: Verify ffmpeg.exe exists
+      # Step 4: List All Files and Folders
+      - name: List All Files and Folders
+        run: |
+          dir /s /b
+        shell: cmd
+
+      # Step 5: Verify ffmpeg.exe exists
       - name: Verify ffmpeg.exe exists
         run: |
           if (!(Test-Path -Path "ffmpeg/ffmpeg.exe")) {
@@ -35,16 +41,14 @@ jobs:
               echo "ffmpeg.exe not found in the ffmpeg directory."
           }
 
+          if (!(Test-Path -Path "ffmpeg.exe")) {
+              echo "ffmpeg.exe not found in the ffmpeg directory."
+          }
+
           if (!(Test-Path -Path "ffmpeg\ffmpeg.exe")) {
               echo "ffmpeg\ffmpeg.exe not found in the ffmpeg directory."
           }
         shell: pwsh
-
-      # Step 5: List All Files and Folders
-      - name: List All Files and Folders
-        run: |
-          dir /s /b
-        shell: cmd
 
       # Step 6: Run dl.bat with PowerShell
       - name: Run dl.bat with PowerShell
