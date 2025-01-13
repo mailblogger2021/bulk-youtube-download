@@ -24,37 +24,22 @@ jobs:
         run: |
           7z x ffmpeg.7z -o"ffmpeg" -y
 
-      # Step 4: List All Files and Folders
+      # Step 4: Move ffmpeg files to root
+      - name: Move ffmpeg files to root
+        run: |
+          move ffmpeg\* .
+        shell: cmd
+
+      # Step 5: List All Files and Folders
       - name: List All Files and Folders
         run: |
           dir /s /b
         shell: cmd
 
-      # Step 5: Verify ffmpeg.exe exists
-      - name: Verify ffmpeg.exe exists
-        run: |
-          if (!(Test-Path -Path "ffmpeg/ffmpeg.exe")) {
-              echo "ffmpeg/ffmpeg.exe not found in the ffmpeg directory."
-          }
-
-          if (!(Test-Path -Path "ffmpeg.exe")) {
-              echo "ffmpeg.exe not found in the ffmpeg directory."
-          }
-
-          if (!(Test-Path -Path "ffmpeg.exe")) {
-              echo "ffmpeg.exe not found in the ffmpeg directory."
-          }
-
-          if (!(Test-Path -Path "ffmpeg\ffmpeg.exe")) {
-              echo "ffmpeg\ffmpeg.exe not found in the ffmpeg directory."
-          }
-        shell: pwsh
-
-      # Step 6: Run dl.bat with PowerShell
-      - name: Run dl.bat with PowerShell
+      # Step 6: Run dl.bat
+      - name: Run dl.bat
         run: |
           .\dl.bat
-        working-directory: ${{ github.workspace }}
         shell: pwsh
 
       # Step 7: Upload 'download' folder as artifact
