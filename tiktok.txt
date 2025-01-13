@@ -1,9 +1,3 @@
 [
-    https://www.tiktok.com/@brunomars/video/7427205403173211435,
-    https://www.tiktok.com/@batcat079/video/7441888993651739934,
-    https://www.tiktok.com/@brookespicher/video/7432148220920270111,
-    https://www.tiktok.com/@victoriassecret/video/7426167423801380138,
-    https://www.tiktok.com/@mrbeast/video/7455448503347645738,
-    https://www.tiktok.com/@ishowspeed/video/7433850442557443374,
-    https://www.tiktok.com/@teamtrump/video/7433202628072394030
+    https://www.tiktok.com/@brunomars/video/7427205403173211435
 ]

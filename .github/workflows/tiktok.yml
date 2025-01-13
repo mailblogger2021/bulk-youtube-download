@@ -36,6 +36,13 @@ jobs:
           dir /s /b
         shell: cmd
 
+      - name: Update yt-dlp
+        run: |
+          if exist yt-dlp.exe (
+              yt-dlp.exe -U
+          ) else (
+              echo yt-dlp.exe not found! Please ensure it is included in the repository or downloaded before running.
+          )
       # Step 6: Run dl.bat
       - name: Run tiktok.bat
         run: |
