@@ -30,12 +30,12 @@ jobs:
           python -m playwright install
           pip install -r TikTok-Api/requirements.txt
       
+      # Step 5: List All Files and Folders (Using bash)
       - name: List All Files and Folders
         run: |
-          dir /s /b
-        shell: cmd
+          find . -type f
 
-      # Step 5: Run the TikTok API script
+      # Step 6: Run the TikTok API script
       - name: Run TikTok API
         working-directory: TikTok-Api
         env:
@@ -43,7 +43,7 @@ jobs:
         run: |
           python -m examples.get_trending
 
-      # Step 6: Save the output as an artifact
+      # Step 7: Save the output as an artifact
       - name: Upload output
         if: success()
         uses: actions/upload-artifact@v3
