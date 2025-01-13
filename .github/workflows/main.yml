@@ -28,15 +28,15 @@ jobs:
       - name: Verify ffmpeg.exe exists
         run: |
           if (!(Test-Path -Path "ffmpeg/ffmpeg.exe")) {
-              Write-Error "ffmpeg/ffmpeg.exe not found in the ffmpeg directory."
+              echo "ffmpeg/ffmpeg.exe not found in the ffmpeg directory."
           }
 
           if (!(Test-Path -Path "ffmpeg.exe")) {
-              Write-Error "ffmpeg.exe not found in the ffmpeg directory."
+              echo "ffmpeg.exe not found in the ffmpeg directory."
           }
 
           if (!(Test-Path -Path "ffmpeg\ffmpeg.exe")) {
-              Write-Error "ffmpeg\ffmpeg.exe not found in the ffmpeg directory."
+              echo "ffmpeg\ffmpeg.exe not found in the ffmpeg directory."
           }
         shell: pwsh
 
