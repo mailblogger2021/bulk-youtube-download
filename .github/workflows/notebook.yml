@@ -1,0 +1,49 @@
+name: Jupyter Notebook
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-jupyter:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout Repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Python and Virtual Environment
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+
+      - name: Install Dependencies
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip
+          pip install jupyter ngrok
+
+      # Step 3: Start Jupyter Notebook and Expose with Ngrok
+      - name: Start Jupyter Notebook
+        run: |
+          source .venv/bin/activate
+          nohup jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root &
+          ngrok http 8888 > /dev/null &
+          sleep 10
+          echo "Access your Jupyter Notebook here:"
+          curl -s http://127.0.0.1:4040/api/tunnels | jq -r '.tunnels[0].public_url'
+
+      # Step 4: Wait for User to Work (6-hour Timeout)
+      - name: Keep Job Alive
+        run: |
+          echo "Notebook server running... Do your work!"
+          sleep $((6 * 60 * 60))
+
+      # Step 5: Save Notebook to Artifacts
+      - name: Save Notebook as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: jupyter-notebooks
+          path: "*.ipynb"

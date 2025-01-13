@@ -174,3 +174,8 @@ cython_debug/
 #mycode
 ffmpeg.exe
 ffprobe.exe
+
+youtube/
+output/
+downloaded/
+downloads/
