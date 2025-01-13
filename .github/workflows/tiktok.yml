@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  bulk-download:
+  tiktok-bulk-download:
     runs-on: windows-latest
     steps:
       # Step 1: Checkout the repository
@@ -37,14 +37,14 @@ jobs:
         shell: cmd
 
       # Step 6: Run dl.bat
-      - name: Run dl.bat
+      - name: Run tiktok.bat
         run: |
-          .\dl.bat
+          .\tiktok.bat
         shell: pwsh
 
       # Step 7: Upload 'download' folder as artifact
       - name: Upload Download Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: downloads
-          path: downloads/
+          name: tiktok
+          path: tiktok/

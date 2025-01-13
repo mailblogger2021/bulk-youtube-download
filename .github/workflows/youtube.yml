@@ -1,0 +1,50 @@
+name: Bulk YouTube Download
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  youtube-bulk-download:
+    runs-on: windows-latest
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Install 7zip
+      - name: Install 7zip
+        run: |
+          choco install 7zip -y
+
+      # Step 3: Unzip ffmpeg.7z
+      - name: Unzip ffmpeg.7z
+        run: |
+          7z x ffmpeg.7z -o"ffmpeg" -y
+
+      # Step 4: Move ffmpeg files to root
+      - name: Move ffmpeg files to root
+        run: |
+          move ffmpeg\* .
+        shell: cmd
+
+      # Step 5: List All Files and Folders
+      - name: List All Files and Folders
+        run: |
+          dir /s /b
+        shell: cmd
+
+      # Step 6: Run dl.bat
+      - name: Run yt.bat
+        run: |
+          .\yt.bat
+        shell: pwsh
+
+      # Step 7: Upload 'download' folder as artifact
+      - name: Upload Download Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: youtube
+          path: youtube/
