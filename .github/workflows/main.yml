@@ -30,10 +30,13 @@ jobs:
           dir /s /b
         shell: cmd
 
-      # Step 5: Run the dl.bat file
-      - name: Run dl.bat
+      # Step 5: Run the dl.bat file using PowerShell
+      - name: Run dl.bat with PowerShell
         run: |
-          dl.bat
+          cd $env:GITHUB_WORKSPACE
+          .\dl.bat
+        shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+
 
       # Step 6: Upload 'download' folder as artifact
       - name: Upload Download Artifact

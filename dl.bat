@@ -66,7 +66,7 @@ for /l %%i in (1,1,%count%) do (
     set "current_url=!url[%%i]!"
     set "current_url=!current_url:"=!"
 	set "current_url=!current_url:,=!"
-    yt-dlp.exe --ffmpeg-location "ffmpeg.exe" -f bestvideo+bestaudio/best --embed-subs --embed-thumbnail --embed-metadata --no-playlist -o "downloads\%%(title)s [%%(id)s].%%(ext)s" !current_url!
+    yt-dlp.exe --ffmpeg-location "ffmpeg\ffmpeg.exe" -f bestvideo+bestaudio/best --embed-subs --embed-thumbnail --embed-metadata --no-playlist -o "downloads\%%(title)s [%%(id)s].%%(ext)s" !current_url!
 	echo.
 )
 
