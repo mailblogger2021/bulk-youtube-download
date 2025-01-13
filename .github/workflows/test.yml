@@ -8,34 +8,45 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
-      - name: Checkout repository
+      # Step 1: Clone the repository (your own repository)
+      - name: Checkout your repository
         uses: actions/checkout@v3
 
-      # Set up Python
+      # Step 2: Clone the TikTok-Api repository
+      - name: Clone TikTok-Api repository
+        run: git clone https://github.com/Daan-Grashoff/TikTok-Api.git
+
+      # Step 3: Set up Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      # Install dependencies
+      # Step 4: Install dependencies for TikTok-Api
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install TikTokApi playwright
+          pip install playwright
           python -m playwright install
+          pip install -r TikTok-Api/requirements.txt
+      
+      - name: List All Files and Folders
+        run: |
+          dir /s /b
+        shell: cmd
 
-      # Run the TikTok API script
+      # Step 5: Run the TikTok API script
       - name: Run TikTok API
+        working-directory: TikTok-Api
         env:
           CUSTOM_VERIFY_FP: ${{ secrets.CUSTOM_VERIFY_FP }}
         run: |
           python -m examples.get_trending
 
-      # Save the output as an artifact
+      # Step 6: Save the output as an artifact
       - name: Upload output
         if: success()
         uses: actions/upload-artifact@v3
         with:
           name: tiktok-output
-          path: output/
+          path: TikTok-Api/output/
