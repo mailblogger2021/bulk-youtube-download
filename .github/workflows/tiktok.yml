@@ -38,15 +38,12 @@ jobs:
 
       - name: Update yt-dlp
         run: |
-          if exist yt-dlp.exe (
-              yt-dlp.exe -U
-          ) else (
-              echo yt-dlp.exe not found! Please ensure it is included in the repository or downloaded before running.
-          )
-      # Step 6: Run dl.bat
-      - name: Run tiktok.bat
-        run: |
-          .\tiktok.bat
+          if (Test-Path "yt-dlp.exe") {
+              ./yt-dlp.exe -U
+          } else {
+              Write-Host "yt-dlp.exe not found! Please ensure it is included in the repository or downloaded before running."
+              exit 1
+          }
         shell: pwsh
 
       # Step 7: Upload 'download' folder as artifact
