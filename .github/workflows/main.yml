@@ -2,6 +2,9 @@ name: Bulk YouTube Download
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   download-and-store:
