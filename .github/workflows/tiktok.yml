@@ -46,9 +46,9 @@ jobs:
         shell: pwsh
 
          # Step 6: Run dl.bat
-      - name: Run yt.bat
+      - name: Run tiktok.bat
         run: |
-          .\yt.bat
+          .\tiktok.bat
         shell: pwsh
 
       # Step 7: Upload 'download' folder as artifact
