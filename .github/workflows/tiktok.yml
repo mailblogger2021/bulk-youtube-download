@@ -1,4 +1,4 @@
-name: Bulk YouTube Download
+name: Bulk tiktok Download
 
 on:
   workflow_dispatch:
