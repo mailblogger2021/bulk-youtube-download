@@ -50,7 +50,6 @@ jobs:
           CUSTOM_VERIFY_FP: ${{ secrets.CUSTOM_VERIFY_FP }}
         run: |
           python -m examples.get_trending
-          python -m examples.download_tiktok
           python -m examples.get_a_users_videos
           python -m examples.get_tiktoks_by_hashtag
           python -m examples.get_tiktoks_by_sound
