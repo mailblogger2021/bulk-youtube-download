@@ -2,12 +2,9 @@ name: Bulk YouTube Download
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
 
 jobs:
-  download-and-store:
+  bulk-download:
     runs-on: windows-latest
     steps:
       # Step 1: Checkout the repository
@@ -24,23 +21,38 @@ jobs:
         run: |
           7z x ffmpeg.7z -o"ffmpeg" -y
 
-      # Step 4: Print Directory Structure
+      # Step 4: Verify ffmpeg.exe exists
+      - name: Verify ffmpeg.exe exists
+        run: |
+          if (!(Test-Path -Path "ffmpeg/ffmpeg.exe")) {
+              Write-Error "ffmpeg/ffmpeg.exe not found in the ffmpeg directory."
+          }
+
+          if (!(Test-Path -Path "ffmpeg.exe")) {
+              Write-Error "ffmpeg.exe not found in the ffmpeg directory."
+          }
+
+          if (!(Test-Path -Path "ffmpeg\ffmpeg.exe")) {
+              Write-Error "ffmpeg\ffmpeg.exe not found in the ffmpeg directory."
+          }
+        shell: pwsh
+
+      # Step 5: List All Files and Folders
       - name: List All Files and Folders
         run: |
           dir /s /b
         shell: cmd
 
-      # Step 5: Run dl.bat using PowerShell
+      # Step 6: Run dl.bat with PowerShell
       - name: Run dl.bat with PowerShell
         run: |
           .\dl.bat
         working-directory: ${{ github.workspace }}
         shell: pwsh
 
-
-      # Step 6: Upload 'download' folder as artifact
+      # Step 7: Upload 'download' folder as artifact
       - name: Upload Download Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: downloads
-          path: downloads/
+          name: download-folder
+          path: download/
