@@ -1,0 +1,49 @@
+name: Scrape TikTok Hashtag
+
+on:
+  workflow_dispatch: # Manual trigger
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v3
+
+    - name: Clone tiktok-scraper repository
+      run: |
+        git clone https://github.com/drawrowfly/tiktok-scraper.git
+        cd tiktok-scraper
+        npm install
+
+    - name: Scrape TikTok posts for the hashtag "comdy"
+      id: scrape
+      run: |
+        cd tiktok-scraper
+        mkdir ../output
+        npx tiktok-scraper hashtag comdy -n 100 -d -f all --zip --filepath ../output/comdy 
+
+    - name: Convert JSON to Excel
+      run: |
+        mkdir ../output/xlsx
+        cd ../output
+        node -e "
+          const fs = require('fs');
+          const xlsx = require('xlsx');
+          const jsonData = require('./comdy.json');
+          const ws = xlsx.utils.json_to_sheet(jsonData.collector);
+          const wb = xlsx.utils.book_new();
+          xlsx.utils.book_append_sheet(wb, ws, 'TikTok Posts');
+          xlsx.writeFile(wb, './xlsx/comdy.xlsx');
+        "
+
+    - name: Upload JSON, CSV, Excel, and ZIP artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: tiktok-hashtag-scrape-results
+        path: |
+          ./output/comdy.json
+          ./output/comdy.csv
+          ./output/xlsx/comdy.xlsx
+          ./output/comdy.zip
