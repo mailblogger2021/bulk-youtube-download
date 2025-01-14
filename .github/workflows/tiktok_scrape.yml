@@ -11,6 +11,11 @@ jobs:
     - name: Checkout the repository
       uses: actions/checkout@v3
 
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libpixman-1-dev libjpeg-dev libgif-dev
+
     - name: Clone tiktok-scraper repository
       run: |
         git clone https://github.com/drawrowfly/tiktok-scraper.git
