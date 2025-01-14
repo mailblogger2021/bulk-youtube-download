@@ -2,6 +2,9 @@ name: Scrape TikTok Hashtag
 
 on:
   workflow_dispatch: # Manual trigger
+  push:
+    branches:
+      - main
 
 jobs:
   scrape:
@@ -11,26 +14,37 @@ jobs:
     - name: Checkout the repository
       uses: actions/checkout@v3
 
+    - name: Install Node.js and npm
+      run: |
+        # Install Node.js 16.x and npm
+        curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+        sudo apt-get install -y nodejs
+
     - name: Install dependencies
       run: |
+        # Install system dependencies required by TikTok scraper
         sudo apt-get update
         sudo apt-get install -y libpixman-1-dev libjpeg-dev libgif-dev
 
     - name: Clone tiktok-scraper repository
       run: |
+        # Clone the tiktok-scraper repository
         git clone https://github.com/drawrowfly/tiktok-scraper.git
         cd tiktok-scraper
-        npm install
+        git pull origin main  # Ensure you have the latest updates
+        npm install --verbose  # Install dependencies with verbose logs to track errors
 
     - name: Scrape TikTok posts for the hashtag "comdy"
       id: scrape
       run: |
+        # Run the scraper to collect TikTok posts
         cd tiktok-scraper
         mkdir ../output
         npx tiktok-scraper hashtag comdy -n 100 -d -f all --zip --filepath ../output/comdy 
 
     - name: Convert JSON to Excel
       run: |
+        # Convert the JSON data to Excel format
         mkdir ../output/xlsx
         cd ../output
         node -e "
