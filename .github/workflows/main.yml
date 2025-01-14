@@ -1,4 +1,4 @@
-name: TikTok Scraper docker 
+name: TikTok Scraper Docker
 
 on:
   workflow_dispatch: # Allows manual triggering
@@ -28,8 +28,8 @@ jobs:
       # Step 4: Run the Docker container
       - name: Run TikTok scraper in Docker container
         run: |
-          mkdir -p output
-          docker run -v /User/blah/downloads:/usr/app/files tiktok-scraper \
+          mkdir -p /home/runner/work/tiktok-scraper-output
+          docker run -v /home/runner/work/tiktok-scraper-output:/usr/app/files tiktok-scraper \
             trend \
             --download \
             --asyncDownload 5 \
@@ -40,11 +40,11 @@ jobs:
 
       # Step 5: List all files in the output directory
       - name: List files in output directory
-        run: ls -l output
+        run: ls -l /home/runner/work/tiktok-scraper-output
 
       # Step 6: Upload the output as an artifact
       - name: Upload output
         uses: actions/upload-artifact@v3
         with:
           name: tiktok-scraper-output
-          path: output/
+          path: /home/runner/work/tiktok-scraper-output/
