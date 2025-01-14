@@ -2,9 +2,9 @@ name: TikTok Scraper Docker
 
 on:
   workflow_dispatch: # Allows manual triggering
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
 
 jobs:
   run-tiktok-scraper:
