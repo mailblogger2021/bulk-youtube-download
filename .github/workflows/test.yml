@@ -2,9 +2,9 @@ name: TikTok API Runner
 
 on:
   workflow_dispatch: # Allows manual triggering
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
 jobs:
   run-tiktok-api:
     runs-on: ubuntu-latest
