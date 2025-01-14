@@ -1,0 +1,50 @@
+name: TikTok Scraper Docker
+
+on:
+  workflow_dispatch: # Allows manual triggering
+  push:
+    branches:
+      - main
+
+jobs:
+  run-tiktok-scraper:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Clone the tiktok-scraper repository
+      - name: Clone tiktok-scraper repository
+        run: git clone https://github.com/drawrowfly/tiktok-scraper.git
+
+      # Step 2: Change to the repository directory
+      - name: Change directory to tiktok-scraper
+        working-directory: tiktok-scraper
+        run: echo "Entered tiktok-scraper directory"
+
+      # Step 3: Build the Docker image
+      - name: Build Docker image
+        working-directory: tiktok-scraper
+        run: docker build . -t tiktok-scraper
+
+      # Step 4: Run the Docker container
+      - name: Run TikTok scraper in Docker container
+        run: |
+          mkdir -p /home/runner/work/tiktok-scraper-output
+          docker run -v /home/runner/work/tiktok-scraper-output:/usr/app/files tiktok-scraper \
+            trend \
+            --download \
+            --asyncDownload 5 \
+            -w \
+            --hd \
+            --zip \
+            --filetype all
+
+      # Step 5: List all files in the output directory
+      - name: List files in output directory
+        run: ls -l /home/runner/work/tiktok-scraper-output
+
+      # Step 6: Upload the output as an artifact
+      - name: Upload output
+        uses: actions/upload-artifact@v3
+        with:
+          name: tiktok-scraper-output
+          path: /home/runner/work/tiktok-scraper-output/
