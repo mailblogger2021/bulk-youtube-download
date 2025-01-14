@@ -29,7 +29,7 @@ jobs:
       - name: Run TikTok scraper in Docker container
         run: |
           mkdir -p output
-          docker run -v $(pwd)/output:/usr/app/files tiktok-scraper \
+          docker run -v /User/blah/downloads:/usr/app/files tiktok-scraper \
             trend \
             --download \
             --asyncDownload 5 \
