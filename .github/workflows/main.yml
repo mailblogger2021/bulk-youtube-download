@@ -33,6 +33,7 @@ jobs:
             trend \
             --download \
             --asyncDownload 5 \
+            -w \
             --hd \
             --zip \
             --filepath /usr/app/files \
