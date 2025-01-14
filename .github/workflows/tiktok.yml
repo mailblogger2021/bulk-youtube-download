@@ -2,9 +2,9 @@ name: Bulk tiktok Download
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
 
 jobs:
   tiktok-bulk-download:
