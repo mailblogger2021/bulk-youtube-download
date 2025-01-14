@@ -64,8 +64,8 @@ for /l %%i in (1,1,%count%) do (
     set "current_url=!url[%%i]!"
     set "current_url=!current_url:"=!"
 	set "current_url=!current_url:,=!"
-	yt-dlp.exe --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36" --ffmpeg-location "ffmpeg.exe" -f "bestvideo[ext=mp4][height<=1080]+bestaudio[ext=m4a]/best[ext=mp4]" --embed-subs --embed-thumbnail --embed-metadata --no-playlist -o "tiktok\%%(title)s [%%(id)s].%%(ext)s" !current_url!
-    @REM yt-dlp.exe --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36" --ffmpeg-location "ffmpeg.exe" -f "bestvideo[ext=mp4][height<=1080]+bestaudio[ext=m4a]/best[ext=mp4]" --embed-subs --embed-thumbnail --embed-metadata --no-playlist -o "tiktok\%%(title)s [%%(id)s].%%(ext)s" --postprocessor-args "-vf crop=ih*9/16:ih:0:0" !current_url!
+	@REM yt-dlp.exe --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36" --ffmpeg-location "ffmpeg.exe" -f "bestvideo[ext=mp4][height<=1080]+bestaudio[ext=m4a]/best[ext=mp4]" --embed-subs --embed-thumbnail --embed-metadata --no-playlist -o "tiktok\%%(title)s [%%(id)s].%%(ext)s" !current_url!
+    yt-dlp.exe --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36" --ffmpeg-location "ffmpeg.exe" -f "bestvideo[ext=mp4][height<=1080]+bestaudio[ext=m4a]/best[ext=mp4]" --embed-subs --embed-thumbnail --embed-metadata --no-playlist -o "tiktok\%%(title)s [%%(id)s].%%(ext)s" --postprocessor-args "-vf crop=ih*9/16:ih:0:0" !current_url!
 
     echo.
 )
