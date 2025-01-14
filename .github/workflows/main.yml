@@ -36,7 +36,6 @@ jobs:
             -w \
             --hd \
             --zip \
-            --filepath /usr/app/files \
             --filetype all
 
       # Step 5: List all files in the output directory
