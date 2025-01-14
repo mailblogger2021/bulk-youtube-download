@@ -29,7 +29,14 @@ jobs:
       - name: Run TikTok scraper in Docker container
         run: |
           mkdir -p output
-          docker run -v $(pwd)/output:/usr/app/files tiktok-scraper user tiktok -d -n 5 -s
+          docker run -v $(pwd)/output:/usr/app/files tiktok-scraper \
+            trend \
+            --download \
+            --asyncDownload 5 \
+            --hd \
+            --zip \
+            --filepath /usr/app/files \
+            --filetype all
 
       # Step 5: List all files in the output directory
       - name: List files in output directory
