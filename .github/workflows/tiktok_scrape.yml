@@ -31,7 +31,6 @@ jobs:
         # Clone the tiktok-scraper repository
         git clone https://github.com/drawrowfly/tiktok-scraper.git
         cd tiktok-scraper
-        git pull origin main  # Ensure you have the latest updates
         npm install --verbose  # Install dependencies with verbose logs to track errors
 
     - name: Scrape TikTok posts for the hashtag "comdy"
