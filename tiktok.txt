@@ -1,7 +1,3 @@
 [
-    https://www.tiktok.com/@loveword51/video/7378194724290792750,
-    https://www.tiktok.com/@loveword51/video/7411822793005976878,
-    https://www.tiktok.com/@loveword51/video/7428762257435168042,
-    https://www.tiktok.com/@loveword51/video/7415719827609816366,
-    https://www.tiktok.com/@loveword51/video/7376715990643543342
+    https://www.tiktok.com/@loveword51/video/7378194724290792750
 ]
