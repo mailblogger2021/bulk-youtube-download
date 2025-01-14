@@ -14,10 +14,10 @@ jobs:
     - name: Checkout the repository
       uses: actions/checkout@v3
 
-    - name: Install Node.js and npm
+    - name: Install Node.js 18.x and npm
       run: |
-        # Install Node.js 16.x and npm
-        curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+        # Install Node.js 18.x and npm
+        curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
         sudo apt-get install -y nodejs
 
     - name: Install dependencies
@@ -26,26 +26,23 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y libpixman-1-dev libjpeg-dev libgif-dev
 
-    - name: Clone tiktok-scraper repository
+    - name: Install tiktok-scraper globally using npm
       run: |
-        # Clone the tiktok-scraper repository
-        git clone https://github.com/drawrowfly/tiktok-scraper.git
-        cd tiktok-scraper
-        npm install --verbose  # Install dependencies with verbose logs to track errors
+        # Install tiktok-scraper globally with npm
+        npm install -g tiktok-scraper
 
     - name: Scrape TikTok posts for the hashtag "comdy"
       id: scrape
       run: |
         # Run the scraper to collect TikTok posts
-        cd tiktok-scraper
-        mkdir ../output
-        npx tiktok-scraper hashtag comdy -n 100 -d -f all --zip --filepath ../output/comdy 
+        mkdir output
+        npx tiktok-scraper hashtag comdy -n 100 -d -f all --zip --filepath ./output/comdy
 
     - name: Convert JSON to Excel
       run: |
         # Convert the JSON data to Excel format
-        mkdir ../output/xlsx
-        cd ../output
+        mkdir ./output/xlsx
+        cd ./output
         node -e "
           const fs = require('fs');
           const xlsx = require('xlsx');
