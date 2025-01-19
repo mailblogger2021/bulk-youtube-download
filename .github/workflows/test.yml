@@ -1,71 +1,84 @@
-name: TikTok API Runner
+name: Bulk TikTok Download with Psiphon VPN and Proxy
 
 on:
-  workflow_dispatch: # Allows manual triggering
-  # push:
-  #   branches:
-  #     - main
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
 jobs:
-  run-tiktok-api:
+  tiktok-bulk-download:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Clone the repository (your own repository)
-      - name: Checkout your repository
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Step 2: Clone the TikTok-Api repository
-      - name: Clone TikTok-Api repository
-        run: git clone https://github.com/Daan-Grashoff/TikTok-Api.git
-
-      # Step 3: Set up Python
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      # Step 4: Install dependencies for TikTok-Api
-      - name: Install dependencies
+      # Step 2: Download Psiphon
+      - name: Download Psiphon
         run: |
-          python -m pip install --upgrade pip
-          pip install playwright
-          python -m playwright install
-          pip install -r TikTok-Api/requirements.txt
-      
-      - name: Install Playwright dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libwoff1 libvpx9 libevent-2.1-7t64 libopus0 libgstreamer-plugins-base1.0-0 libgstreamer-gl1.0-0 libgstreamer-plugins-bad1.0-0 libflite1 libavif16 libharfbuzz-icu0 libsecret-1-0 libhyphen0 libmanette-0.2-0 libgles2 gstreamer1.0-libav
-      
-      
-      # Step 5: List All Files and Folders (Using bash)
-      - name: List All Files and Folders
-        run: |
-          find . -type f
+          wget https://psiphon.ca/psiphon-tunnel-core-latest-linux -O psiphon
+          chmod +x psiphon
 
-      # Step 6: Run the TikTok API script
-      - name: Run TikTok API
-        working-directory: TikTok-Api
-        env:
-          CUSTOM_VERIFY_FP: ${{ secrets.CUSTOM_VERIFY_FP }}
+      # Step 3: Start Psiphon VPN and Save Logs
+      - name: Start Psiphon VPN
         run: |
-          python -m examples.get_trending
-          python -m examples.get_a_users_videos
-          python -m examples.get_tiktoks_by_hashtag
-          python -m examples.get_tiktoks_by_sound
-          python -m examples.get_tiktoks_by_username
+          mkdir -p logs
+          ./psiphon -country SG > logs/psiphon.log 2>&1 &
+          sleep 15 # Wait for Psiphon to establish a connection
 
-      # Step 6: Run the TikTok API script
-      - name: Run my code
-        env:
-          CUSTOM_VERIFY_FP: ${{ secrets.CUSTOM_VERIFY_FP }}
+      # Step 4: Configure Proxy Environment Variables
+      - name: Configure Proxy
         run: |
-          python -m examples.get_trending
+          export HTTP_PROXY="http://127.0.0.1:8080"
+          export HTTPS_PROXY="http://127.0.0.1:8080"
+          export ALL_PROXY="socks5://127.0.0.1:1080"
+        shell: bash
 
-      # Step 7: Save the output as an artifact
-      - name: Upload output
-        if: success()
+      # Step 5: Verify VPN Connection (Check IP Address)
+      - name: Verify VPN Connection
+        run: |
+          curl -I https://ipinfo.io
+        shell: bash
+
+      # Step 6: Install 7zip
+      - name: Install 7zip
+        run: |
+          sudo apt-get update && sudo apt-get install -y p7zip-full
+
+      # Step 7: Download and Unzip FFMPEG
+      - name: Setup FFMPEG
+        run: |
+          wget https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.7z
+          7z x ffmpeg-release-essentials.7z -o"ffmpeg"
+          mv ffmpeg/* .
+
+      # Step 8: Update yt-dlp
+      - name: Update yt-dlp
+        run: |
+          if [ -f "yt-dlp" ]; then
+              ./yt-dlp -U
+          else
+              echo "yt-dlp not found! Ensure it's included in the repo."
+          fi
+
+      # Step 9: Run Batch Script
+      - name: Run TikTok Download Script
+        run: |
+          chmod +x tiktok.bat
+          ./tiktok.bat
+        shell: bash
+
+      # Step 10: Upload Logs and Download Folder as Artifacts
+      - name: Upload Logs
         uses: actions/upload-artifact@v3
         with:
-          name: tiktok-output
-          path: TikTok-Api/output/
+          name: psiphon-logs
+          path: logs/
+
+      - name: Upload Download Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: tiktok
+          path: tiktok/
