@@ -1,0 +1,11 @@
+let interval;
+
+function startScroll() {
+  interval = setInterval(() => {
+    window.scrollTo(0, document.body.scrollHeight);
+  }, 50);
+}
+
+function stopScroll() {
+  clearInterval(interval);
+}
